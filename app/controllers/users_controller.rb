@@ -9,20 +9,20 @@ class UsersController < ApplicationController
         else
           render json: { errors: user.errors.full_messages }, status: :unprocessable_entity
         end
-      end
+    end
 
     def show
-        user = User.find_by(id: params[:id])
-        if user&.authenticate(params[:password])
-          render json: user
-        else
-          render json: {error: "Wrong username/password"}, status: :unauthorized
-        end
+      user = User.find_by(id: session[:user_id])
+      if user
+        render json: user
+      else
+        render json: {errors: ["unauthorized"]}, status: :unauthorized
+      end
     end
 
     private
     
     def permit_params
-        params.permit(:username, :password, :id)
+        params.permit(:username, :password, :password_confirmation)
     end
 end

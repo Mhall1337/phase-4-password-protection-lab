@@ -11,9 +11,8 @@ class SessionsController < ApplicationController
     end
 
     def destroy
-        user = User.find_by(id: session[:user_id])
-        user.destroy
-        head :no_content
+        session[:user_id] = nil
+        
     end
 
     private
